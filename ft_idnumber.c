@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-char *dateofbirth(char *idnum)
+const char *dateofbirth(char *idnum)
 {
     char *actual_date;
     char **months = {"January","February","March","April","May","June","July","August","September","October","November","Decemeber"};
@@ -43,28 +43,28 @@ char *dateofbirth(char *idnum)
     i++;
     actual_date[i] = idnum[1];
     
-    return *actual_date;
+    return (actual_date);
 }
 
-char *is_citizen(char *idnum){
+const char *is_citizen(char *idnum){
 
     char* well;
 
     if (idnum[10] == '1')
     {
-        *well = "false";
+        *well = "This person was not born in South Africa.";
     } 
     else 
     {
-        *well = "true";
+        *well = "This person was born in South Africa.";
     }
 
-    return (*well);
+    return (well);
 }
 
-char *gender_find(char *idnum)
+const char *gender_find(char *idnum)
 {
-    char* sex;
+    char *sex;
 
     if (idnum[6] >= '0' && idnum[6] <= '4')
     {
@@ -73,18 +73,20 @@ char *gender_find(char *idnum)
     {
         *sex = "Male";
     }
-    return (*sex);
+    return (sex);
 }
 
 int main(int counter, char **vector)
 {
     if (counter == 2)
     {
-        
+        printf("%s \n", is_citizen(*vector[1])); 
+        printf("%s \n", dateofbirth(*vector[1])); 
+        printf("%s \n", gender_find(*vector[1])); 
     }
     else
     {
-        printf("Please make sure you enter an ID number only.")
+        printf("Please make sure you enter an ID n only.");
     }
     
     return (0);
