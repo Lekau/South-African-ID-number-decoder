@@ -3,18 +3,18 @@
 
 const char *dateofbirth(char *idnum)
 {
-    char* actual_date;
-    char months[][] = {"January","February","March","April","May","June","July","August","September","October","November","Decemeber"};
+    char *actual_date;
+    char **months = {"January","February","March","April","May","June","July","August","September","October","November","Decemeber"};
     int i = 3;
     int k = 0;
     int j = 0;
     int which_month;
-    printf("we are getting here");
-
+    
     // Errors start here hahahahahaha 
     
     which_month = ((atoi(idnum[2]) * 10) + atoi(idnum[3]));
-    
+    actual_date = (char*)malloc(sizeof(char) * (which_month + 8));
+    printf("we are getting here");
     while (months[which_month][j])
     {
         j++;
