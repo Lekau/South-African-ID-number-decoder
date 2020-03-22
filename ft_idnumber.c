@@ -1,104 +1,149 @@
-#include <stdio.h>
+#include <unistd.h>
 #include <stdlib.h>
-
-const char *dateofbirth(char *idnum)
+void ft_putchar(char c)
 {
-    char *actual_date;
-    char **months = {"January","February","March","April","May","June","July","August","September","October","November","Decemeber"};
-    int i = 3;
-    int k = 0;
-    int j = 0;
-    int which_month;
-    
-    // Errors start here hahahahahaha 
-    
-    which_month = ((atoi(idnum[2]) * 10) + atoi(idnum[3]));
-    actual_date = (char*)malloc(sizeof(char) * (which_month + 8));
-    printf("we are getting here");
-    while (months[which_month][j])
+    write(1, &c, 1);
+}
+
+void ft_putstr(char *str)
+{
+    int i;
+    i = 0;
+    while(str[i] != '\0')
     {
-        j++;
+        ft_putchar(str[i]);
+        i++;
     }
-     
-    actual_date = (char*)malloc(sizeof(char) * (8 + j));
-   
-    actual_date[0] = idnum[4];
-    actual_date[1] = idnum[5];
-    actual_date[2] = ' ';
-    while (months[which_month][k] != '/0')
+}
+
+int ft_strlen(char *str)
+{
+    int i;
+
+    i = 0;
+    while(str[i] != '\0')
     {
-        actual_date[i] = months[which_month][k];
+        i++;
+    }
+    return (i);
+}
+
+int ft_atoi(char *str)
+{
+    int kau;
+    int i;
+    int is_neg;
+
+    kau = 0;
+    is_neg = 1;
+    i = 0;
+    while(((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z')) && str[i] != '-')
+        i++;
+
+    if (str[i] == '-')
+    {
+        is_neg = -1;
+        i++;
+    }
+    while(str[i] >= '0' && str[i] <= '9')
+    {
+        kau = (kau * 10) + (str[i] - '0');
+        i++;
+    }
+    return (kau * is_neg);
+}
+
+char * ft_gender(char unit)
+{
+    char *gender;
+
+    if (unit >= '5' && unit <= '9')
+    {
+        gender = "This person is Male \n";
+    }
+    else 
+    {
+        gender = "This person is Female \n";
+    }
+    return(gender);
+}
+
+char * ft_citizen(char unit)
+{
+    char *c_status;
+    if (unit == '0')
+    {
+        c_status = "This person was born in South Africa.\n";
+    }
+    else
+    {
+        c_status = "This person was not born in South Africa.\n";
+    }
+    return (c_status);
+}
+
+char * ft_month(char m1, char m2)
+{
+    char str_month[12][12] = {"January", "Februay", "March", "April", "May", "June", "July", "August", "Septemper", "October", "November", "December"};
+    int num_month;
+    char char_month[2] = {m1, m2};
+
+    num_month = ft_atoi(char_month);
+
+    return (*str_month[num_month]);
+}
+
+char * ft_date_of_birth(char c1, char c2, char m1, char m2, char d1, char d2)
+{
+    char *date_of_birth;
+    char message[] = "This person was born: ";
+    char *str_month;
+    int i;
+    int k;
+
+    k = 0;
+    i = 0;
+    str_month = ft_month(m1, m2);
+
+    date_of_birth = (char*)malloc(sizeof(char) * (ft_strlen(str_month) + 30));
+    while (message[i])
+    {
+        date_of_birth[i] = message[i];
+        i++;
+    }
+    date_of_birth[i] = d1;
+    date_of_birth[i++] = d2;
+    date_of_birth[i++] = ' ';
+
+    while(str_month[k])
+    {
+        str_month[k] = date_of_birth[i];
+        i++;
         k++;
-        i++;
     }
-   
-    actual_date[i] = ' ';
-    i++;
-    if (idnum[0] <= '2' && idnum[1] == '0')
-    {
-        actual_date[i] = '2';
-        i++;
-        actual_date[i] = '0';
-        i++;
-    } 
-    else 
-    {
-        actual_date[i] = '1';
-        i++;
-        actual_date[i] = '9';
-        i++;
-    }
-    actual_date[i] = idnum[0];
-    i++;
-    actual_date[i] = idnum[1]; 
-    
-    return (actual_date);
-}
+    date_of_birth[i] = ' ';
+    date_of_birth[i++] = '1';
+    date_of_birth[i++] = '9';
+    date_of_birth[i++] = d1;
+    date_of_birth[i++] = d2;
 
-const char *is_citizen(char *idnum)
-{
-
-    char* well;
-
-    if (idnum[10] == '1')
-    {
-        well = "This person was not born in South Africa.";
-    } 
-    else 
-    {
-        well = "This person was born in South Africa.";
-    }
-
-    return (well);
-}
-
-const char *gender_find(char *idnum)
-{
-    char* sex;
-
-    if (idnum[6] < '5')
-    {
-        sex = "Female";
-    } 
-    else if (idnum[6] > '4')
-    {
-        sex = "Male";
-    }
-    return (sex);
+    return (date_of_birth);
 }
 
 int main(int counter, char **vector)
 {
     if (counter == 2)
     {
-        printf("%s \n", dateofbirth(vector[1])); 
-        printf("%s \n", gender_find(vector[1]));
-        printf("%s \n", is_citizen(vector[1]));  
+        ft_putstr("For the ID Number: ");
+        ft_putstr(vector[1]);
+        ft_putchar('\n');
+        ft_putstr(ft_date_of_birth(vector[1][0], vector[1][1], vector[1][2], vector[1][3], vector[1][4], vector[1][5]));
+        ft_putstr(ft_gender(vector[1][6]));
+        ft_putstr(ft_citizen(vector[1][10]));
     }
-    else
+    else 
     {
-        printf("Please make sure you enter an ID n only.");
+        ft_putstr("Please on enter one argument.");
     }
-    
     return (0);
 }
